@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload CSV | Sales Forecasting Cloud App</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #111;
+            color: #f0f0f0;
+        }
+
+        header {
+            background-color: #1f1f1f;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+        }
+
+        header h1 {
+            margin: 0;
+            color: #00bcd4;
+        }
+
+        nav {
+            margin-top: 10px;
+        }
+
+        nav a {
+            color: #ccc;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #00bcd4;
+        }
+
+        main {
+            max-width: 600px;
+            margin: 40px auto;
+            background-color: #1a1a1a;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 188, 212, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #00bcd4;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        input[type="file"],
+        input[type="number"],
+        button {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            font-size: 16px;
+        }
+
+        input[type="file"],
+        input[type="number"] {
+            background-color: #2a2a2a;
+            color: #fff;
+        }
+
+        button {
+            background-color: #00bcd4;
+            color: #111;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #0097a7;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            color: #00bcd4;
+            text-decoration: none;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+        .flash-message {
+            background-color: #d32f2f;
+            color: #fff;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Sales Forecasting Cloud App</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/upload">Upload CSV</a>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Upload Your Sales CSV</h2>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-message">
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="/predict" enctype="multipart/form-data">
+            <label for="file">Select CSV file:</label>
+            <input type="file" name="file" accept=".csv" required>
+
+            <label for="periods">Forecast Periods (in months):</label>
+            <input type="number" name="periods" min="1" value="6" required>
+
+            <button type="submit">📈 Generate Forecast</button>
+        </form>
+
+        <div class="back-link">
+            <a href="/">← Back to Home</a>
+        </div>
+    </main>
+</body>
+</html>
