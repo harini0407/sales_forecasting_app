@@ -6,10 +6,19 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
+            font-family: 'Inter', 'Montserrat', sans-serif;
+            background: linear-gradient(-45deg, #1f1f1f, #00f6ff, #121212, #00c9e6);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #e0e0e0;
             margin: 0;
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #111;
-            color: #f0f0f0;
+            padding: 0;
+        }
+
+        @keyframes gradientBG {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
         }
 
         header {
@@ -22,6 +31,9 @@
         header h1 {
             margin: 0;
             color: #00bcd4;
+        }
+        h1, h2, h3 {
+            font-family: 'Montserrat', 'Inter', sans-serif;
         }
 
         nav {
