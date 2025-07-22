@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,7 +12,7 @@
             animation: gradientBG 15s ease infinite;
             color: #e0e0e0;
             margin: 0;
-            padding: 0;
+            padding: 16px;
         }
 
         @keyframes gradientBG {
@@ -168,7 +168,7 @@
         © 2025 Harini Babu | Sales Forecasting App 
     </footer>
     <script>
-    // Animated background with mouse movement
+    // Responsive, mobile-friendly animated background
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
     let w = window.innerWidth;
@@ -179,8 +179,348 @@
     canvas.style.top = 0;
     canvas.style.left = 0;
     canvas.style.zIndex = '-1';
+    canvas.style.width = '100vw';
+    canvas.style.height = '100vh';
+
+    let pointer = { x: w / 2, y: h / 2 };
+
+    function resizeCanvas() {
+        w = window.innerWidth;
+        h = window.innerHeight;
+        canvas.width = w;
+        canvas.height = h;
+    }
+    window.addEventListener('resize', resizeCanvas);
+
+    // Mouse and touch support
+    function updatePointer(e) {
+        if (e.touches && e.touches.length > 0) {
+            pointer.x = e.touches[0].clientX;
+            pointer.y = e.touches[0].clientY;
+        } else {
+            pointer.x = e.clientX;
+            pointer.y = e.clientY;
+        }
+    }
+    document.addEventListener('mousemove', updatePointer);
+    document.addEventListener('touchmove', updatePointer, { passive: false });
+
+    function draw() {
+        ctx.clearRect(0, 0, w, h);
+        // Draw soft, glowing circles that follow the pointer
+        for (let i = 0; i < 7; i++) {
+            let angle = Date.now() / 1200 + i * 0.7;
+            let radius = 60 + i * 22;
+            let x = pointer.x + Math.cos(angle) * radius;
+            let y = pointer.y + Math.sin(angle) * radius;
+            let grad = ctx.createRadialGradient(x, y, 0, x, y, 32 - i * 2);
+            grad.addColorStop(0, `rgba(${20 + i * 30},${246 - i * 20},255,0.18)`);
+            grad.addColorStop(1, 'rgba(0,0,0,0)');
+            ctx.beginPath();
+            ctx.arc(x, y, 32 - i * 2, 0, 2 * Math.PI);
+            ctx.fillStyle = grad;
+            ctx.fill();
+        }
+        requestAnimationFrame(draw);
+    }
+    draw();
     </script>
     </canvas>
     </body>
 </body>
+</html>-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sales Forecasting App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Font only for body -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Smooch+Sans:wght@100..900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #00f6ff;
+            --background-color: #1f1f1f;
+            --text-color: #e0e0e0;
+            --card-bg: #1e1e1e;
+        }
+
+        body {
+            font-family: 'Smooch Sans', sans-serif;
+            background: linear-gradient(-45deg, #1f1f1f, #00f6ff, #121212, #00c9e6);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-color);
+            margin: 0;
+            padding: 16px;
+        }
+
+        @keyframes gradientBG {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+        }
+
+        header {
+            padding: 20px;
+            text-align: center;
+            background: var(--background-color);
+            border-bottom: 1px solid #333;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Unlock', serif;
+            margin: 0.6em 0;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2rem;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 960px;
+            margin: auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 25px;
+            box-shadow: 0 0 10px #00f6ff1a;
+        }
+
+        a.button, button.button {
+            display: inline-block;
+            padding: 12px 18px;
+            background: var(--primary-color);
+            color: #000;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            margin: 6px 0;
+            text-align: center;
+        }
+
+        a.button:hover, button.button:hover {
+            background: #00c9e6;
+        }
+
+        a.link {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        a.link:hover {
+            text-decoration: underline;
+        }
+
+        input, textarea {
+            width: 90%;
+            background: #222;
+            border: 1px solid #444;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .comment-card {
+  background-color: #0d0202d1;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.comment-input,
+.comment-textarea {
+  width: 100%;
+  max-width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+.submit-btn {
+  background-color: #2d6cdf;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .comment-card {
+    padding: 15px;
+  }
+
+  .submit-btn {
+    font-size: 14px;
+    padding: 10px;
+  }
+}
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            background: var(--background-color);
+            color: #888;
+            margin-top: 40px;
+        }
+
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 10px;
+                font-size: 0.95rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            .card {
+                padding: 15px;
+            }
+
+            a.button, button.button {
+                font-size: 0.9rem;
+                padding: 10px 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<header>
+    <h1>📊 Sales Forecasting App</h1>
+    <p>Predict future sales with AI</p>
+</header>
+<div class="container">
+    <div class="card">
+        <h2>🔍 What This App Does</h2>
+        <p>Upload your historical sales data, choose a forecast duration, and let the AI predict future sales using Facebook Prophet.</p>
+    </div>
+
+    <div class="card">
+        <h3>📌 CSV Upload Guidelines</h3>
+        <ul>
+            <li><strong>2 columns</strong>: <code>ds</code> (date) and <code>y</code> (value).</li>
+            <li><code>ds</code> must be in <strong>YYYY-MM-DD</strong> format.</li>
+            <li><code>y</code> should contain numeric sales values.</li>
+            <li>Minimum 12 months of historical data.</li>
+        </ul>
+        <a class="button" href="/static/sales_data.csv" download>📥 Sample CSV</a>
+        <a class="button" href="/upload">📈 Start Forecasting</a>
+    </div>
+
+    <div class="card">
+        <h2>👩‍💻 About the Creator</h2>
+        <p>Hi, I'm <strong>Harini Babu</strong> — an AI & Data Science Aspirant from Tamil Nadu. I love solving real-world problems through tech!</p>
+        <ul>
+            <li>🔗 <a href="https://www.linkedin.com/in/harini-babu2004/" class="link" target="_blank">LinkedIn</a></li>
+            <li>📸 <a href="https://www.instagram.com/harinibabu.official" class="link" target="_blank">Instagram</a></li>
+            <li>📧 <a href="mailto:harinibabu0407@gmail.com" class="link">harinibabu0407@gmail.com</a></li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>💬 Leave a Comment</h2>
+        <form method="POST" action="/comment">
+            <label>Name:</label>
+            <input type="text" name="name" required>
+            <label>Your Feedback:</label>
+            <textarea name="message" rows="3" required></textarea>
+            <button type="submit" class="button">Post Comment</button>
+        </form>
+
+        {% for comment in comments %}
+        <div class="comment-card">
+            <strong>{{ comment.name }}</strong>
+            <p>{{ comment.message }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<footer>
+    © 2025 Harini Babu | Sales Forecasting App
+</footer>
+<script>
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let w = window.innerWidth;
+let h = window.innerHeight;
+canvas.width = w;
+canvas.height = h;
+canvas.style.position = 'fixed';
+canvas.style.top = 0;
+canvas.style.left = 0;
+canvas.style.zIndex = '-1';
+
+let pointer = { x: w / 2, y: h / 2 };
+window.addEventListener('resize', () => {
+    w = window.innerWidth;
+    h = window.innerHeight;
+    canvas.width = w;
+    canvas.height = h;
+});
+
+function updatePointer(e) {
+    if (e.touches && e.touches.length > 0) {
+        pointer.x = e.touches[0].clientX;
+        pointer.y = e.touches[0].clientY;
+    } else {
+        pointer.x = e.clientX;
+        pointer.y = e.clientY;
+    }
+}
+document.addEventListener('mousemove', updatePointer);
+document.addEventListener('touchmove', updatePointer, { passive: false });
+
+function draw() {
+    ctx.clearRect(0, 0, w, h);
+    for (let i = 0; i < 7; i++) {
+        let angle = Date.now() / 1200 + i * 0.7;
+        let radius = 60 + i * 22;
+        let x = pointer.x + Math.cos(angle) * radius;
+        let y = pointer.y + Math.sin(angle) * radius;
+        let grad = ctx.createRadialGradient(x, y, 0, x, y, 32 - i * 2);
+        grad.addColorStop(0, `rgba(${20 + i * 30},${246 - i * 20},255,0.18)`);
+        grad.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.beginPath();
+        ctx.arc(x, y, 32 - i * 2, 0, 2 * Math.PI);
+        ctx.fillStyle = grad;
+        ctx.fill();
+    }
+    requestAnimationFrame(draw);
+}
+draw();
+</script>
+</body>
 </html>
+

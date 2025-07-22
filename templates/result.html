@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -210,5 +210,292 @@
         button.classList.add('active');
     }
 </script>
+</body>
+</html>
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Forecast Result | Sales Forecasting Cloud App</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Smooch+Sans:wght@100..900&family=Unlock&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Smooch Sans', sans-serif;
+      background: linear-gradient(-45deg, #1f1f1f, #00f6ff, #121212, #00c9e6);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      color: #e0e0e0;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .main-wrapper {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: #1f1f1f;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 1px solid #333;
+    }
+
+    header h1 {
+      margin: 0;
+      font-family: 'Unlock', serif;
+      color: #00e3e3;
+      font-size: 2rem;
+    }
+
+    nav {
+      margin-top: 10px;
+    }
+
+    nav a {
+      color: #ccc;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      color: #00bcd4;
+    }
+
+    main {
+      width: 100%;
+      max-width: 1000px;
+      margin: auto;
+      padding: 30px;
+      background-color: #1a1a1a;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 188, 212, 0.1);
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    h2 {
+      text-align: center;
+      font-family: 'Unlock', serif;
+      font-size: 1.8rem;
+      color: #00bcd4;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .tab-button {
+      background-color: #2a2a2a;
+      border: none;
+      padding: 10px 20px;
+      margin: 5px;
+      color: #00bcd4;
+      cursor: pointer;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .tab-button.active {
+      background-color: #00bcd4;
+      color: #111;
+    }
+
+    .tab-content {
+      display: none;
+      width: 100%;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    #forecastChart {
+      max-width: 100%;
+      height: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      color: #fff;
+    }
+
+    table, th, td {
+      border: 1px solid #333;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: center;
+    }
+
+    .download-btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #00bcd4;
+      color: #111;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .download-btn:hover {
+      background-color: #0097a7;
+    }
+
+    @media screen and (max-width: 768px) {
+      main {
+        margin: 20px 15px;
+        padding: 20px;
+      }
+
+      header h1 {
+        font-size: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.3rem;
+      }
+
+      .tab-button {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+      }
+
+      .download-btn {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+      }
+
+      #forecastChart {
+        transform: rotate(90deg);
+        transform-origin: center;
+        height: 400px !important;
+        width: 100% !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-wrapper">
+    <header>
+      <h1>Sales Forecasting Cloud App</h1>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/upload">Upload New CSV</a>
+      </nav>
+    </header>
+
+    <main>
+      <h2>Forecast Results</h2>
+
+      <div class="tabs">
+        <button class="tab-button active" onclick="showTab('graph', this)">📊 Graph</button>
+        <button class="tab-button" onclick="showTab('table', this)">📋 Table</button>
+      </div>
+
+      <div id="graph" class="tab-content active">
+        <canvas id="forecastChart"></canvas>
+      </div>
+
+      <div id="table" class="tab-content">
+        <table>
+          <tr>
+            <th>Date</th>
+            <th>Forecast (yhat)</th>
+          </tr>
+          {% for row in forecast %}
+          <tr>
+            <td>{{ row['date'] }}</td>
+            <td>{{ (row['forecast'] or row['predicted']) | round(2) if row['forecast'] or row['predicted'] else 'N/A' }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+
+      <div style="text-align: center;">
+        <a class="download-btn" href="/download_csv" download>⬇️ Download Forecast CSV</a>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const forecastData = {{ forecast | tojson | safe }};
+    const dates = forecastData.map(row => row.date);
+    const values = forecastData.map(row => parseFloat(row.forecast || row.predicted));
+
+    const ctx = document.getElementById('forecastChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: dates,
+        datasets: [{
+          label: 'Forecast (yhat)',
+          data: values,
+          borderColor: '#00bcd4',
+          backgroundColor: 'rgba(0,188,212,0.1)',
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            labels: { color: '#ffffff' }
+          },
+          tooltip: {
+            mode: 'index',
+            intersect: false
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: '#ccc' },
+            grid: { color: '#333' }
+          },
+          y: {
+            ticks: { color: '#ccc' },
+            grid: { color: '#333' }
+          }
+        }
+      }
+    });
+
+    function showTab(tabId, button) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      button.classList.add('active');
+    }
+  </script>
 </body>
 </html>

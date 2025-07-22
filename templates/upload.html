@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -147,6 +147,219 @@
 
             <label for="periods">Forecast Periods (in months):</label>
             <input type="number" name="periods" min="1" value="6" required>
+
+            <button type="submit">📈 Generate Forecast</button>
+        </form>
+
+        <div class="back-link">
+            <a href="/">← Back to Home</a>
+        </div>
+    </main>
+</body>
+</html>
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload CSV | Sales Forecasting Cloud App</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Smooch+Sans:wght@100..900&display=swap" rel="stylesheet">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: 'Smooch Sans', sans-serif;
+        background: linear-gradient(-45deg, #1f1f1f, #00f6ff, #121212, #00c9e6);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+        color: #e0e0e0;
+        padding: 0;
+    }
+
+    @keyframes gradientBG {
+        0% {background-position: 0% 50%;}
+        50% {background-position: 100% 50%;}
+        100% {background-position: 0% 50%;}
+    }
+
+    header {
+        background-color: #1f1f1f;
+        padding: 20px;
+        text-align: center;
+        border-bottom: 1px solid #333;
+    }
+
+    header h1 {
+        margin: 0;
+        font-family: 'Unlock', serif;
+        color: #00e3e3;
+        font-size: 2rem;
+    }
+
+    nav {
+        margin-top: 10px;
+    }
+
+    nav a {
+        color: #ccc;
+        text-decoration: none;
+        margin: 0 10px;
+        font-weight: bold;
+        transition: color 0.3s;
+    }
+
+    nav a:hover {
+        color: #00bcd4;
+    }
+
+    main {
+        max-width: 480px;
+        margin: 40px auto;
+        background-color: #1a1a1a;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 188, 212, 0.15);
+    }
+
+    h2 {
+        text-align: center;
+        font-family: 'Unlock', serif;
+        color: #00bcd4;
+        font-size: 1.7rem;
+        margin-bottom: 25px;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    label {
+        font-weight: bold;
+        font-size: 1rem;
+        margin-bottom: 6px;
+    }
+
+    input[type="file"],
+    input[type="number"],
+    button {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 6px;
+        border: none;
+        font-size: 1rem;
+        font-family: 'Smooch Sans', sans-serif;
+        transition: transform 0.2s ease, background 0.3s ease;
+    }
+
+    input[type="file"],
+    input[type="number"] {
+        background-color: #2a2a2a;
+        color: #ffffff;
+    }
+
+    input[type="file"]:hover,
+    input[type="number"]:hover {
+        background-color: #333;
+    }
+
+    button {
+        background-color: #00bcd4;
+        color: #111;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    button:hover {
+        background-color: #00a6ba;
+        transform: scale(1.03);
+    }
+
+    .flash-message {
+        background-color: #d32f2f;
+        color: #fff;
+        padding: 12px;
+        border-radius: 5px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .back-link {
+        text-align: center;
+        margin-top: 25px;
+    }
+
+    .back-link a {
+        color: #00bcd4;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .back-link a:hover {
+        text-decoration: underline;
+    }
+
+    @media screen and (max-width: 600px) {
+        main {
+            margin: 20px 10px;
+            padding: 20px;
+        }
+
+        header h1 {
+            font-size: 1.4rem;
+        }
+
+        h2 {
+            font-size: 1.3rem;
+        }
+    }
+</style>
+
+</head>
+
+<body>
+    <header>
+        <h1>Sales Forecasting Cloud App</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/upload">Upload CSV</a>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Upload Your Sales CSV</h2>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-message">
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="/predict" enctype="multipart/form-data">
+            <div>
+                <label for="file">Select CSV file:</label>
+                <input type="file" name="file" accept=".csv" required>
+            </div>
+
+            <div>
+                <label for="periods">Forecast Periods (in months):</label>
+                <input type="number" name="periods" min="1" value="6" required>
+            </div>
 
             <button type="submit">📈 Generate Forecast</button>
         </form>
